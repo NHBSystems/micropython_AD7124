@@ -4,7 +4,6 @@ import neopixel
 import gc
 
 from micropython_AD7124 import NHB_AD7124
-from micropython_AD7124 import thermocouple
 
 filterSelectBits = 4 #Fast
 
@@ -40,8 +39,6 @@ adc.setup[0].set_config(NHB_AD7124.AD7124_Ref_ExtRef1, NHB_AD7124.AD7124_Gain_12
 # - Use internal reference and a gain of 1
 adc.setup[1].set_config(NHB_AD7124.AD7124_Ref_Internal, NHB_AD7124.AD7124_Gain_1, True) #IC Temp
 
-# Configure Setup 2 for reading a thermocouple
-adc.setup[2].set_config(NHB_AD7124.AD7124_Ref_ExtRef1, NHB_AD7124.AD7124_Gain_64, True)
 
 
 # Set filter type and data rate select bits (defined above)
@@ -53,7 +50,6 @@ adc.setup[2].set_config(NHB_AD7124.AD7124_Ref_ExtRef1, NHB_AD7124.AD7124_Gain_64
 adc.setup[0].set_filter(NHB_AD7124.AD7124_Filter_SINC3, filterSelectBits)
 adc.setup[1].set_filter(NHB_AD7124.AD7124_Filter_SINC3, filterSelectBits)
 
-adc.setup[2].set_filter(NHB_AD7124.AD7124_Filter_SINC3, filterSelectBits)
 
 
 # Set channel 0 to use pins AIN0(+)/AIN1(-)
@@ -63,11 +59,6 @@ adc.set_channel(0, 0, NHB_AD7124.AD7124_Input_AIN0, NHB_AD7124.AD7124_Input_AIN1
 # and AVSS for the negative
 adc.set_channel(1, 1, NHB_AD7124.AD7124_Input_TEMP, NHB_AD7124.AD7124_Input_AVSS, True) #IC Temp
 
-# Set channel 2 to use pins AIN2(+)/AIN3(-)
-adc.set_channel(2, 2, NHB_AD7124.AD7124_Input_AIN2, NHB_AD7124.AD7124_Input_AIN3, True)
-
-# Enable bias voltage for thermocouple
-adc.set_vbias(NHB_AD7124.AD7124_Input_AIN3, True)
 
 print("Turning ExV on")
 adc.setPWRSW(True)
@@ -85,8 +76,5 @@ while True:
     
     ic_temp = adc.read_ic_temp(1)       
     print(f" IC Temp = {ic_temp:.2f}")
-
-    tc_reading = adc.read_tc(2,ic_temp, thermocouple.Type_K)       
-    print(f" Thermocouple = {tc_reading:.2f}")
-    
+        
     sleep_ms(100)  

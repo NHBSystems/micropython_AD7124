@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 #
-# Copyright (c) 2023 Jaimy Juliano, NHBSystems
+# Copyright (c) 2024 Jaimy Juliano, NHBSystems
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 from machine import Pin, SPI
 from time import ticks_ms, sleep_ms, ticks_diff
-from micropython_AD7124.thermocouple import TC
+#from micropython_AD7124.thermocouple import TC # Not implemented yet
 
 try:
     from micropython import const
@@ -509,7 +509,7 @@ class Ad7124:
         self.spi = spi
         self._cs = Pin(csPin, mode=Pin.OUT, value=1)  # Create chip-select on csPin
         
-        self.thermocouple = TC
+        #self.thermocouple = TC #Not implemented yet
         
         self._crc_enabled = False
         self.opmode = AD7124_OpMode_SingleConv
@@ -769,13 +769,13 @@ class Ad7124:
            
         return self.to_volts(self.read_raw(ch),ch)
         
-    
-    def read_tc(self, ch: int, ref_temp: float, type: int):
-        '''
-        Read K Type thermocouple. The channel must first be setup properly
-        for reading thermocouples.
-        '''
-        return self.thermocouple.volts_to_tempC(self.read_volts(ch), ref_temp, type)
+    # *** Not working yet ***
+    # def read_tc(self, ch: int, ref_temp: float, type: int):
+    #     '''
+    #     Read K Type thermocouple. The channel must first be setup properly
+    #     for reading thermocouples.
+    #     '''
+    #     return self.thermocouple.volts_to_tempC(self.read_volts(ch), ref_temp, type)
         
 
     def read_fb(self, ch: int, vEx: float, scale_factor: float = 1.00):
