@@ -412,8 +412,7 @@ class Ad7124Setup:
         self._setup_number = index
         self._driver = driver
         self.setup_values = Ad7124SetupVals()
-
-    # Not sure what to do about type hints here?
+    
     def set_config(self, ref_source, gain, bipolar: bool, 
                    burnout = AD7124_Burnout_Off, 
                    exRefV: float = 2.50):
@@ -779,7 +778,7 @@ class Ad7124:
         return self.thermocouple.volts_to_tempC(self.read_volts(ch), ref_temp, type)
         
 
-    def read_fb(self, ch: int, vEx: float, scale_factor: float):
+    def read_fb(self, ch: int, vEx: float, scale_factor: float = 1.00):
         '''
         Read a 4 wire full bridge sensor. Return value can be scaled with
         optional scaleFactor arg. Returns mV/V if scale factor is one (default)
@@ -793,14 +792,14 @@ class Ad7124:
         Sets up the ADC control register
 
         Args:
-            mode (AD7124_OperatingModes):   The operating mode to set device to
-            power_mode (AD7124_PowerModes): Power mode (Low, Mid, Full)
-            ref_en (bool):                  Enable the internal reference voltage
-            clk_sel (AD7124_ClkSources):    Set the clock source
-            
-        NOTE: Always uses Data + Status mode
+            mode:          The operating mode to set device to
+            power_mode:    Power mode (Low, Mid, Full)
+            ref_en (bool): Enable the internal reference voltage
+            clk_sel:       Set the clock source        
+        
         '''
-
+        
+        #NOTE: We always uses Data + Status mode
         self.regs[_AD7124_ADC_CTRL_REG].value = _AD7124_ADC_CTRL_REG_MODE(mode) | \
                                                 _AD7124_ADC_CTRL_REG_POWER_MODE(power_mode) | \
                                                 _AD7124_ADC_CTRL_REG_CLK_SEL(clk_sel) | \
