@@ -10,6 +10,8 @@ So far I have only tested this library on an ESP32-C3, but it
 really should work with any architectures that has a working SPI
 implementation.   
 
+WARNING, THIS IS A WORK IN PROGRESS
+
 
 Basic API  
 --------
@@ -152,23 +154,6 @@ def read_raw(self, ch: int) -> uint:
 <br>
 
 There are also a few sensor specific read functions provided for convenience.  
-  
-The `read_TC(ch,refTemp, type)` method is intended to simplify reading 
-thermocouples. It currently only supports Type K thermocouples, but I intend to 
-add more types in the future. The channel read must be properly configured
-for reading thermocouples for this to work *(Bipolar mode, VBias enabled, and an
-appropriate gain)*
-
-```python
-def read_tc(self, ch: int, ref_temp: float, type: int = Type_K):
-```  
-|   Argument     |    Description                                            |
-| ---------------| --------------------------------------------------------- |
-| `ch`           | The channel to read                                       |
-| `ref_temp`     | The reference (cold junction) temperature.                |
-| `type`         | The type of thermocouple you are reading. *(Currently only Type K is supported)* <br> *Optional argument, defaults to Type_K* |
-
-<br>
 
 The `read_FB(ch, vEx, scale_factor)` method is for reading full bridge type 
 sensors (load cells, pressure gauges, extensometers, ...). It could also be 
